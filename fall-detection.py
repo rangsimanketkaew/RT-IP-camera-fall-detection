@@ -1,4 +1,4 @@
-# Based on Zed code - Person Fall detection using raspberry pi camera and opencv lib. 
+# Based on Zed code - Person Fall detection using raspberry pi camera and opencv lib.
 # Link: https://www.youtube.com/watch?v=eXMYZedp0Uo
 #
 # Improvement by Rangsiman Ketkaew
@@ -14,12 +14,18 @@ password = '12345'
 fitToEllipse = False
 ######################
 
+# Video clip
 # cap = cv2.VideoCapture('abc.mp4')
 # IP camera
-cap = cv2.VideoCapture(f'rtsp://{username}:{password}@{ip_cam}')
+# cap = cv2.VideoCapture(f'rtsp://{username}:{password}@{ip_cam}')
+# Laptop camera
+cap = cv2.VideoCapture(1)
+
+print("Fall detection")
 time.sleep(2)
 
 fgbg = cv2.createBackgroundSubtractorMOG2()
+f = 0
 j = 0
 
 while(True):
@@ -59,7 +65,8 @@ while(True):
                 j += 1
 
             if j > 10:
-                # print("FALL")
+                print(f"FALL !! ==> {f+1}")
+                f += 1
                 #cv2.putText(fgmask, 'FALL', (x, y), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (255,255,255), 2)
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
 
@@ -71,6 +78,7 @@ while(True):
 
             if cv2.waitKey(33) == 27:
                 break
+
     except Exception as e:
         break
 
